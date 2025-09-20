@@ -7,18 +7,18 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  NPM_FLAGS = "--force"
-
-# API routes will be converted to Netlify Functions automatically
-[functions]
-  node_bundler = "esbuild"
+  NPM_FLAGS = "--production=false"
 
 # Redirect rules for client-side routing
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Role = ["public"], Country = ["*"]}
 
 # Cache headers for better performance
 [[headers]]
