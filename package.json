@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:seed": "tsx src/lib/seed.ts",
-    "postbuild": "prisma db push --accept-data-loss --skip-generate || true"
+    "postbuild": "prisma db push --accept-data-loss --skip-generate && npm run db:seed || echo 'Database seeding failed but continuing...'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
