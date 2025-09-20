@@ -7,7 +7,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:seed": "tsx src/lib/seed.ts",
+    "db:seed": "tsx src/lib/simple-seed.ts",
+    "db:seed-simple": "tsx src/lib/seed.ts",
     "postbuild": "prisma db push --accept-data-loss --skip-generate && npm run db:seed || echo 'Database seeding failed but continuing...'"
   },
   "dependencies": {

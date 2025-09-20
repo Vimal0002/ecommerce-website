@@ -12,34 +12,69 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  cartItems CartItem[]
+  id          String      @id @default(cuid())
+  email       String      @unique
+  password    String
+  name        String?
+  role        UserRole    @default(USER)
+  avatar      String?
+  phone       String?
+  address     String?
+  city        String?
+  postalCode  String?
+  country     String?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  cartItems   CartItem[]
+  orders      Order[]
+  reviews     Review[]
+  wishlist    Wishlist[]
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
 
 model Category {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  products Product[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  image       String?
+  slug        String    @unique
+  isActive    Boolean   @default(true)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  price       Float
-  image       String?
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
-  cartItems   CartItem[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String      @id @default(cuid())
+  name          String
+  description   String?
+  shortDesc     String?
+  price         Float
+  originalPrice Float?
+  discount      Float?      @default(0)
+  sku           String      @unique
+  slug          String      @unique
+  images        String?     // JSON string of image URLs
+  stock         Int         @default(0)
+  isActive      Boolean     @default(true)
+  isFeatured    Boolean     @default(false)
+  tags          String?     // JSON string of tags
+  weight        Float?
+  dimensions    String?
+  brand         String?
+  categoryId    String
+  category      Category    @relation(fields: [categoryId], references: [id])
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  reviews       Review[]
+  wishlist      Wishlist[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 model CartItem {
@@ -51,6 +86,107 @@ model CartItem {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@unique([userId, productId])
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+  userId        String
+  status        OrderStatus @default(PENDING)
+  total         Float
+  subtotal      Float
+  tax           Float       @default(0)
+  shipping      Float       @default(0)
+  discount      Float       @default(0)
+  
+  // Shipping Information
+  shippingName     String
+  shippingEmail    String
+  shippingPhone    String?
+  shippingAddress  String
+  shippingCity     String
+  shippingState    String?
+  shippingPostal   String
+  shippingCountry  String
+  
+  // Billing Information
+  billingName      String?
+  billingAddress   String?
+  billingCity      String?
+  billingState     String?
+  billingPostal    String?
+  billingCountry   String?
+  
+  paymentMethod    String?
+  paymentStatus    PaymentStatus @default(PENDING)
+  paidAt           DateTime?
+  shippedAt        DateTime?
+  deliveredAt      DateTime?
+  notes            String?
+  
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  total     Float
+  
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  rating    Int      // 1-5 stars
+  title     String?
+  comment   String?
+  isVerified Boolean @default(false)
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, productId])
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
   
   @@unique([userId, productId])
 }

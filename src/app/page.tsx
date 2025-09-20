@@ -13,8 +13,15 @@ interface Product {
   id: string
   name: string
   description?: string
+  shortDesc?: string
   price: number
-  image?: string
+  originalPrice?: number
+  discount?: number
+  images?: string
+  stock: number
+  isFeatured: boolean
+  brand?: string
+  tags?: string
   categoryId: string
   category: {
     id: string
@@ -224,18 +231,28 @@ export default function Home() {
             {products.map((product) => (
               <div key={product.id} className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                 <div className="p-4">
-                  {/* Product Image Placeholder */}
-                  <div className="h-48 bg-gray-200 rounded-md mb-4 flex items-center justify-center">
-                    {product.image ? (
+                  {/* Product Image */}
+                  <div className="relative h-48 bg-gray-200 rounded-md mb-4 flex items-center justify-center overflow-hidden">
+                    {product.images ? (
                       <img
-                        src={product.image}
+                        src={product.images}
                         alt={product.name}
-                        className="h-full w-full object-cover rounded-md"
+                        className="h-full w-full object-cover rounded-md transition-transform hover:scale-105"
                       />
                     ) : (
                       <div className="text-gray-400 text-center">
                         <div className="text-4xl mb-2">📦</div>
                         <div className="text-sm">No Image</div>
+                      </div>
+                    )}
+                    {product.isFeatured && (
+                      <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                        Featured
+                      </div>
+                    )}
+                    {product.discount && product.discount > 0 && (
+                      <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                        -{product.discount}%
                       </div>
                     )}
                   </div>
@@ -253,9 +270,21 @@ export default function Home() {
                       </p>
                     )}
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-gray-900">
-                        ${product.price.toFixed(2)}
-                      </span>
+                      <div className="flex flex-col">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-lg font-bold text-gray-900">
+                            ${product.price.toFixed(2)}
+                          </span>
+                          {product.originalPrice && product.originalPrice > product.price && (
+                            <span className="text-sm text-gray-500 line-through">
+                              ${product.originalPrice.toFixed(2)}
+                            </span>
+                          )}
+                        </div>
+                        {product.brand && (
+                          <span className="text-xs text-gray-500">{product.brand}</span>
+                        )}
+                      </div>
                       <button
                         onClick={() => handleAddToCart(product.id)}
                         className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
