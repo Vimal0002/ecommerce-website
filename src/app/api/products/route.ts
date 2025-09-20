@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     const maxPrice = searchParams.get('maxPrice')
     const search = searchParams.get('search')
 
-    const where: any = {}
+    const where: Record<string, any> = {}
 
     if (categoryId) {
       where.categoryId = categoryId

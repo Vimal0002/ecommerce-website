@@ -46,8 +46,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.post('/api/auth/login', { email, password })
       setUser(response.data.user)
       toast.success('Login successful!')
-    } catch (error: any) {
-      const message = error.response?.data?.error || 'Login failed'
+    } catch (error: unknown) {
+      const message = (error as any).response?.data?.error || 'Login failed'
       toast.error(message)
       throw error
     }
@@ -58,8 +58,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await axios.post('/api/auth/signup', { email, password, name })
       setUser(response.data.user)
       toast.success('Account created successfully!')
-    } catch (error: any) {
-      const message = error.response?.data?.error || 'Signup failed'
+    } catch (error: unknown) {
+      const message = (error as any).response?.data?.error || 'Signup failed'
       toast.error(message)
       throw error
     }

@@ -82,8 +82,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       await axios.post('/api/cart', { productId, quantity })
       await refreshCart()
       toast.success('Item added to cart!')
-    } catch (error: any) {
-      const message = error.response?.data?.error || 'Failed to add item to cart'
+    } catch (error: unknown) {
+      const message = (error as any).response?.data?.error || 'Failed to add item to cart'
       toast.error(message)
       throw error
     }
@@ -93,8 +93,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       await axios.put(`/api/cart/${cartItemId}`, { quantity })
       await refreshCart()
-    } catch (error: any) {
-      const message = error.response?.data?.error || 'Failed to update cart item'
+    } catch (error: unknown) {
+      const message = (error as any).response?.data?.error || 'Failed to update cart item'
       toast.error(message)
       throw error
     }
@@ -105,8 +105,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       await axios.delete(`/api/cart/${cartItemId}`)
       await refreshCart()
       toast.success('Item removed from cart!')
-    } catch (error: any) {
-      const message = error.response?.data?.error || 'Failed to remove item from cart'
+    } catch (error: unknown) {
+      const message = (error as any).response?.data?.error || 'Failed to remove item from cart'
       toast.error(message)
       throw error
     }
