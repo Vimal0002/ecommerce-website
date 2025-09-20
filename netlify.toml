@@ -1,0 +1,32 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--force"
+
+# API routes will be converted to Netlify Functions automatically
+[functions]
+  node_bundler = "esbuild"
+
+# Redirect rules for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["public"], Country = ["*"]}
+
+# Cache headers for better performance
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

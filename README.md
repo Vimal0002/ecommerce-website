@@ -104,9 +104,14 @@ The application will be available at `http://localhost:3000`
 
 ## 🚀 Deployment
 
-### Vercel Deployment (Recommended)
+### Netlify Deployment (Recommended)
 
-1. **Push to GitHub**
+1. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+2. **Push to GitHub**
    ```bash
    git init
    git add .
@@ -115,17 +120,19 @@ The application will be available at `http://localhost:3000`
    git push -u origin main
    ```
 
-2. **Deploy to Vercel**
-   - Import your GitHub repository on Vercel
-   - Add environment variables in Vercel dashboard
-   - For production, use a proper database (PostgreSQL, MySQL, etc.)
+3. **Deploy to Netlify**
+   - Connect your GitHub repository to Netlify
+   - Set build command: `npm run build`
+   - Set publish directory: `out`
+   - Add environment variables in Netlify dashboard
+   - For production, use a cloud database (PostgreSQL, MySQL, etc.)
 
-3. **Environment Variables for Production**
+4. **Environment Variables for Production**
    ```env
    DATABASE_URL="your-production-database-url"
    JWT_SECRET="your-production-jwt-secret"
    NEXTAUTH_SECRET="your-production-nextauth-secret"
-   NEXTAUTH_URL="https://your-domain.vercel.app"
+   NEXTAUTH_URL="https://your-site-name.netlify.app"
    NODE_ENV="production"
    ```
 
