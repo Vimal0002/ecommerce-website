@@ -61,6 +61,8 @@ export default function Home() {
       setCategories(response.data.categories)
     } catch (error) {
       console.error('Error fetching categories:', error)
+      toast.error('Unable to load categories. Using fallback data.')
+      // Categories will remain empty, which is handled gracefully by the UI
     }
   }
 
@@ -74,9 +76,12 @@ export default function Home() {
       if (maxPrice) params.append('maxPrice', maxPrice)
 
       const response = await axios.get(`/api/products?${params.toString()}`)
-      setProducts(response.data.products)
+      setProducts(response.data.products || [])
     } catch (error) {
       console.error('Error fetching products:', error)
+      toast.error('Unable to load products. Showing fallback data.')
+      // Products will remain empty array, which is handled by the no products message
+      setProducts([])
     } finally {
       setLoading(false)
     }

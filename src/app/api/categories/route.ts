@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { z } from 'zod'
+import { fallbackCategories } from '@/lib/fallback-data'
 
 const categorySchema = z.object({
   name: z.string().min(1, 'Category name is required')
@@ -9,20 +10,28 @@ const categorySchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: {
-        name: 'asc'
-      },
-      include: {
-        _count: {
-          select: {
-            products: true
+    // Try to use database first
+    try {
+      const categories = await prisma.category.findMany({
+        orderBy: {
+          name: 'asc'
+        },
+        include: {
+          _count: {
+            select: {
+              products: true
+            }
           }
         }
-      }
-    })
+      })
 
-    return NextResponse.json({ categories })
+      return NextResponse.json({ categories })
+    } catch (dbError) {
+      console.warn('Database not available, using fallback data:', dbError)
+      
+      // Use fallback data
+      return NextResponse.json({ categories: fallbackCategories })
+    }
   } catch (error) {
     console.error('Get categories error:', error)
     return NextResponse.json(

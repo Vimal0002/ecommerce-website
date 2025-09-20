@@ -59,6 +59,11 @@ export default function LoginPage() {
             create a new account
           </Link>
         </p>
+        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+          <p className="text-sm text-blue-800 text-center">
+            <strong>Demo Login:</strong> Use <code className="bg-blue-100 px-1 rounded">demo@example.com</code> with password <code className="bg-blue-100 px-1 rounded">demo123</code>
+          </p>
+        </div>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

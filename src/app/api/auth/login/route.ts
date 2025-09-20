@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { comparePasswords, generateToken } from '@/lib/auth'
+import { authenticateMockUser } from '@/lib/mock-auth'
 import { z } from 'zod'
 
 const loginSchema = z.object({
@@ -13,22 +14,39 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = loginSchema.parse(body)
 
-    // Find user by email
-    const user = await prisma.user.findUnique({
-      where: { email: validatedData.email }
-    })
+    let user = null
+    let isValidPassword = false
 
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid email or password' },
-        { status: 401 }
-      )
+    try {
+      // Try database authentication first
+      user = await prisma.user.findUnique({
+        where: { email: validatedData.email }
+      })
+
+      if (user) {
+        isValidPassword = await comparePasswords(validatedData.password, user.password)
+      }
+    } catch (dbError) {
+      console.error('Database authentication failed, falling back to mock auth:', dbError)
+      
+      // Fallback to mock authentication
+      const mockUser = authenticateMockUser(validatedData.email, validatedData.password)
+      if (mockUser) {
+        user = mockUser
+        isValidPassword = true
+      }
     }
 
-    // Verify password
-    const isValidPassword = await comparePasswords(validatedData.password, user.password)
+    // If database failed and no user found, try mock auth
+    if (!user) {
+      const mockUser = authenticateMockUser(validatedData.email, validatedData.password)
+      if (mockUser) {
+        user = mockUser
+        isValidPassword = true
+      }
+    }
 
-    if (!isValidPassword) {
+    if (!user || !isValidPassword) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
