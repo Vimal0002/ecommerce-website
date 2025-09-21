@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: shopeasy-ecommerce
+    runtime: node
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: file:./dev.db
+      - key: JWT_SECRET
+        value: render-prod-ecommerce-jwt-secret-2024-secure-deployment
+      - key: NEXTAUTH_SECRET
+        value: render-prod-nextauth-secret-2024-ecommerce-platform
+      - key: NEXTAUTH_URL
+        fromService:
+          type: web
+          name: shopeasy-ecommerce
+          property: host
+    plan: free
