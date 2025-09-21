@@ -1,0 +1,32 @@
+app = "shopeasy-ecommerce"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  DATABASE_URL = "file:./dev.db"
+  PORT = "3000"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[http_service.checks]]
+  interval = "10s"
+  method = "GET"
+  path = "/"
+  timeout = "2s"
+
+[processes]
+app = "npm start"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

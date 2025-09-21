@@ -1,0 +1,15 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyMaxRetries = 10
+
+[vars]
+NODE_ENV = "production"
+PORT = "3000"
+DATABASE_URL = "file:./dev.db"
+JWT_SECRET = "railway-prod-ecommerce-jwt-secret-2024-secure-deployment"
+NEXTAUTH_SECRET = "railway-prod-nextauth-secret-2024-ecommerce-platform"
