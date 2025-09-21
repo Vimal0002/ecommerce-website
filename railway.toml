@@ -4,10 +4,10 @@ builder = "nixpacks"
 [deploy]
 startCommand = "npm start"
 healthcheckPath = "/"
-healthcheckTimeout = 100
-restartPolicyMaxRetries = 10
+healthcheckTimeout = 300
+restartPolicyMaxRetries = 3
 
-[vars]
+[env]
 NODE_ENV = "production"
 PORT = "3000"
 DATABASE_URL = "file:./dev.db"
