@@ -5,7 +5,11 @@ export interface Product {
   name: string
   description?: string
   price: number
-  image?: string
+  images?: string
+  isFeatured?: boolean
+  originalPrice?: number
+  discount?: number
+  brand?: string
   categoryId: string
   category: {
     id: string
@@ -35,6 +39,11 @@ export const fallbackProducts: Product[] = [
     name: 'Wireless Bluetooth Headphones',
     description: 'Premium quality wireless headphones with noise cancellation and 30-hour battery life.',
     price: 199.99,
+    originalPrice: 249.99,
+    discount: 20,
+    images: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
+    isFeatured: true,
+    brand: 'SoundMax',
     categoryId: '1',
     category: { id: '1', name: 'Electronics' }
   },
@@ -43,6 +52,8 @@ export const fallbackProducts: Product[] = [
     name: 'Smart Phone Stand',
     description: 'Adjustable phone stand compatible with all smartphones and tablets.',
     price: 29.99,
+    images: 'https://images.unsplash.com/photo-1601593346740-925612772716?w=500',
+    brand: 'TechStand',
     categoryId: '1',
     category: { id: '1', name: 'Electronics' }
   },
@@ -51,6 +62,8 @@ export const fallbackProducts: Product[] = [
     name: 'USB-C Hub',
     description: '7-in-1 USB-C hub with HDMI, USB 3.0, and SD card slots.',
     price: 79.99,
+    images: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=500',
+    brand: 'HubTech',
     categoryId: '1',
     category: { id: '1', name: 'Electronics' }
   },
@@ -59,6 +72,10 @@ export const fallbackProducts: Product[] = [
     name: 'Wireless Charging Pad',
     description: 'Fast wireless charging pad compatible with Qi-enabled devices.',
     price: 39.99,
+    originalPrice: 59.99,
+    discount: 33,
+    images: 'https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=500',
+    brand: 'ChargeTech',
     categoryId: '1',
     category: { id: '1', name: 'Electronics' }
   },
@@ -67,6 +84,11 @@ export const fallbackProducts: Product[] = [
     name: 'Premium Cotton T-Shirt',
     description: 'Comfortable 100% organic cotton t-shirt available in multiple colors.',
     price: 24.99,
+    originalPrice: 34.99,
+    discount: 29,
+    images: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500',
+    isFeatured: true,
+    brand: 'EcoWear',
     categoryId: '2',
     category: { id: '2', name: 'Clothing' }
   },
@@ -75,118 +97,33 @@ export const fallbackProducts: Product[] = [
     name: 'Denim Jacket',
     description: 'Classic denim jacket with a modern fit, perfect for casual wear.',
     price: 89.99,
+    images: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500',
+    brand: 'StyleCraft',
     categoryId: '2',
     category: { id: '2', name: 'Clothing' }
   },
   {
     id: '7',
-    name: 'Running Shoes',
-    description: 'Lightweight running shoes with breathable mesh and cushioned sole.',
-    price: 149.99,
-    categoryId: '2',
-    category: { id: '2', name: 'Clothing' }
+    name: 'Modern Table Lamp',
+    description: 'Stylish LED table lamp perfect for home or office use.',
+    price: 89.99,
+    originalPrice: 119.99,
+    discount: 25,
+    images: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500',
+    brand: 'LightCraft',
+    categoryId: '4',
+    category: { id: '4', name: 'Home & Garden' }
   },
   {
     id: '8',
-    name: 'Winter Scarf',
-    description: 'Warm and soft winter scarf made from premium wool blend.',
-    price: 34.99,
-    categoryId: '2',
-    category: { id: '2', name: 'Clothing' }
-  },
-  {
-    id: '9',
-    name: 'The Complete Guide to Web Development',
-    description: 'Comprehensive guide covering HTML, CSS, JavaScript, and modern frameworks.',
+    name: 'Yoga Mat Premium',
+    description: 'High-quality yoga mat made from eco-friendly materials.',
     price: 49.99,
-    categoryId: '3',
-    category: { id: '3', name: 'Books' }
-  },
-  {
-    id: '10',
-    name: 'Mystery Novel: The Silent Observer',
-    description: 'A gripping mystery novel that will keep you on the edge of your seat.',
-    price: 16.99,
-    categoryId: '3',
-    category: { id: '3', name: 'Books' }
-  },
-  {
-    id: '11',
-    name: 'Cookbook: Healthy Meals',
-    description: '100 delicious and healthy recipes for everyday cooking.',
-    price: 27.99,
-    categoryId: '3',
-    category: { id: '3', name: 'Books' }
-  },
-  {
-    id: '12',
-    name: 'Mindfulness and Meditation',
-    description: 'A practical guide to mindfulness and meditation techniques.',
-    price: 19.99,
-    categoryId: '3',
-    category: { id: '3', name: 'Books' }
-  },
-  {
-    id: '13',
-    name: 'LED Desk Lamp',
-    description: 'Adjustable LED desk lamp with multiple brightness levels and USB charging port.',
-    price: 59.99,
-    categoryId: '4',
-    category: { id: '4', name: 'Home & Garden' }
-  },
-  {
-    id: '14',
-    name: 'Succulent Plant Set',
-    description: 'Set of 6 beautiful succulent plants in decorative pots.',
-    price: 44.99,
-    categoryId: '4',
-    category: { id: '4', name: 'Home & Garden' }
-  },
-  {
-    id: '15',
-    name: 'Aromatherapy Diffuser',
-    description: 'Ultrasonic essential oil diffuser with LED lights and timer function.',
-    price: 69.99,
-    categoryId: '4',
-    category: { id: '4', name: 'Home & Garden' }
-  },
-  {
-    id: '16',
-    name: 'Bamboo Cutting Board Set',
-    description: 'Set of 3 eco-friendly bamboo cutting boards in different sizes.',
-    price: 39.99,
-    categoryId: '4',
-    category: { id: '4', name: 'Home & Garden' }
-  },
-  {
-    id: '17',
-    name: 'Yoga Mat',
-    description: 'Non-slip yoga mat with excellent cushioning and carrying strap.',
-    price: 49.99,
-    categoryId: '5',
-    category: { id: '5', name: 'Sports & Outdoors' }
-  },
-  {
-    id: '18',
-    name: 'Water Bottle',
-    description: 'Insulated stainless steel water bottle that keeps drinks cold for 24 hours.',
-    price: 29.99,
-    categoryId: '5',
-    category: { id: '5', name: 'Sports & Outdoors' }
-  },
-  {
-    id: '19',
-    name: 'Resistance Bands Set',
-    description: 'Set of 5 resistance bands with different resistance levels and accessories.',
-    price: 34.99,
-    categoryId: '5',
-    category: { id: '5', name: 'Sports & Outdoors' }
-  },
-  {
-    id: '20',
-    name: 'Camping Tent',
-    description: '3-person waterproof camping tent with easy setup and carry bag.',
-    price: 199.99,
+    originalPrice: 69.99,
+    discount: 29,
+    images: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500',
+    isFeatured: true,
+    brand: 'ZenFit',
     categoryId: '5',
     category: { id: '5', name: 'Sports & Outdoors' }
   }
